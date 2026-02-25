@@ -58,14 +58,20 @@ class Search extends React.PureComponent {
 		// Debounce the search based on the timeout
 		if (this._timeout) {
 			clearTimeout(this._timeout);
+			this._timeout = null;
 		}
-		this._timeout = this.props.timeout
-			&& setTimeout(() => this.props.onSearch(value), this.props.timeout);
+		if (this.props.timeout) {
+			this._timeout = setTimeout(() => this.props.onSearch(value), this.props.timeout);
+		}
+		else {
+			this.props.onSearch(value);
+		}
 	}
 	
 	handleClear = () => {
 		if (this._timeout) {
 			clearTimeout(this._timeout);
+			this._timeout = null;
 		}
 		this.setState({
 			immediateValue: ''
@@ -76,6 +82,13 @@ class Search extends React.PureComponent {
 	handleKeyDown = (event) => {
 		if (event.key == 'Escape') {
 			this.handleClear();
+		}
+		else if (event.key == 'Enter') {
+			if (this._timeout) {
+				clearTimeout(this._timeout);
+				this._timeout = null;
+			}
+			this.props.onSearch(this.state.immediateValue);
 		}
 	}
 	

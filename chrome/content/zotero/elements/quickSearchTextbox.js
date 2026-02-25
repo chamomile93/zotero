@@ -90,6 +90,11 @@
 			searchBox.id = "zotero-tb-search-textbox";
 			// Enable applying styles to the input field
 			searchBox.inputField.setAttribute("part", "search-input");
+			// Pass the timeout attribute to the inner search-textbox for debouncing
+			let timeout = this.getAttribute('timeout');
+			if (timeout) {
+				searchBox.setAttribute('timeout', timeout);
+			}
 			this.searchTextbox = searchBox;
 			
 			wrapper.appendChild(dropmarkerHost);
